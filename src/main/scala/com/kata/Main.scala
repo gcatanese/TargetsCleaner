@@ -2,25 +2,25 @@ package com.kata
 
 import java.io.File
 
+/**
+  * TargetsCleaner tool: removed all Maven 'target' folders provided a given path
+  *
+  * It can also run in PREVIEW mode to list the folders that will be deleted
+  */
 object Main {
 
-  var preview = true
+  var preview = true // run in PREVIEW mode as default
   var count = 0;
 
+  /**
+    * Main entry point
+    * @param args
+    */
   def main(args: Array[String]): Unit = {
 
-    if (args == null || args.isEmpty) {
-      println("Folder path parameter is missing")
-      System.exit(0)
-      return
-    }
+    var validator = new ParameterValidator().validateParameters(args)
 
-    if (args.length > 2) {
-      println("Invalid number of parameters")
-      return
-    }
-
-    var path = args(0)
+    val path = args(0)
 
     if (args.length == 2 && args(1) != null && args(1).equalsIgnoreCase("false")) {
       preview = false
@@ -39,12 +39,16 @@ object Main {
 
   }
 
+
+  /**
+    * Visit recursively the given path
+    * @param folder
+    */
   private def visit(folder: File): Unit = {
 
     var folders = getListOfFolders(folder)
 
     folders.foreach { folder =>
-      //println(folder.getName)
       if (folder.getName.equals("target")) {
         delete(folder)
       } else {
@@ -75,6 +79,10 @@ object Main {
 
   def getListOfFolders(dir: File): List[File] = dir.listFiles.filter(_.isDirectory).toList
 
+  /**
+    * Delete a folder and its content
+    * @param file
+    */
   def deleteRecursively(file: File): Unit = {
     if (file.isDirectory)
       file.listFiles.foreach(deleteRecursively)
