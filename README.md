@@ -1,7 +1,7 @@
 # TargetsCleaner
 
 Removes Maven/SBT 'target' folders starting from a given path.
-It runs by default in PREVIEW mode to list the folders which are going to be deleted.
+It runs by default in PREVIEW mode to ONLY list the folders which are going to be deleted.
 
 ## Run 
 
